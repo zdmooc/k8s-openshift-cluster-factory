@@ -1,0 +1,32 @@
+    flowchart LR
+      subgraph Users[Équipes applicatives]
+        A[Développeurs / Ops Produit]
+      end
+
+      subgraph Platform[Plateforme Kubernetes / OpenShift]
+        C[Cluster Factory
+(IaC Terraform)]
+        B[Golden Baseline
+(Namespaces/RBAC/Quotas/Policies)]
+        O[Observability
+(Prometheus/Grafana/Logs)]
+        S[Security
+(PSA/PSS, Policies, Audit)]
+        D[Day-2 Ops
+(Upgrades, Patching, Capacity)]
+      end
+
+      subgraph SI[SI / Cloud]
+        I[IAM/SSO]
+        N[Réseau/DNS/Firewall/Proxy]
+        R[Registry & Scan]
+        ST[Stockage/Backup]
+      end
+
+      A --> C
+      C --> SI
+      C --> B
+      B --> S
+      B --> O
+      D --> Platform
+      SI --> Platform

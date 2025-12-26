@@ -1,0 +1,10 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - namespaces/platform.yaml
+  - quotas/platform-quota.yaml
+  - limitranges/platform-limitrange.yaml
+  - networkpolicies/default-deny.yaml
+  - pod-security/psa-labels.yaml
+  - rbac/platform-readonly.yaml

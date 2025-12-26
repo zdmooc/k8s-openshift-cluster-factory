@@ -1,0 +1,5 @@
+environment = "preprod"
+tags = {
+  owner       = "platform"
+  cost_center = "CC-PLACEHOLDER"
+}

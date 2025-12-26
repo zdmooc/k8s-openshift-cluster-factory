@@ -1,0 +1,17 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: platform-rules
+  namespace: monitoring
+spec:
+  groups:
+    - name: platform.rules
+      rules:
+        - alert: KubeNodeNotReady
+          expr: kube_node_status_condition{condition="Ready",status="true"} == 0
+          for: 10m
+          labels:
+            severity: critical
+          annotations:
+            summary: "Node NotReady"
+            description: "A node has been NotReady for more than 10 minutes. See runbooks/incident-node-notready.md"

@@ -1,0 +1,23 @@
+# Runbook — <incident / opération>
+
+## Symptômes
+- ...
+
+## Impact
+- ...
+
+## Diagnostic (checklist)
+1. ...
+2. ...
+
+## Actions immédiates (mitigation)
+- ...
+
+## Résolution
+- ...
+
+## Prévention / Post actions
+- ...
+
+## Evidence à collecter
+- commandes / logs / screenshots

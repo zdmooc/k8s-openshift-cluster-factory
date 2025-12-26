@@ -1,0 +1,4 @@
+# backend exemple (à adapter)
+# terraform {
+#   backend "s3" { ... }
+# }
