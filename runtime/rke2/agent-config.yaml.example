@@ -1,0 +1,6 @@
+# REFERENCE_ONLY — RKE2 agent configuration example
+server: https://RKE2_SERVER_ENDPOINT:9345
+token: REPLACE_WITH_SECURE_BOOTSTRAP_TOKEN
+protect-kernel-defaults: true
+node-label:
+  - "factory.mayabank.example/role=worker"
