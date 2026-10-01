@@ -1,8 +1,16 @@
 # Evidence
 
-Ce dossier sert à stocker des preuves (exports, captures) liées à :
-- incidents (postmortems)
-- changements (upgrades/patching)
-- conformité (audits)
+This directory records runtime and static validation evidence for the Cluster Factory.
 
-Les exports automatiques vont dans `evidence/out/` (ignoré par git via .gitignore).
+## Current proof
+
+- Static CI: run `36857552519` — **SUCCESS**.
+- Kind multi-node runtime: run `36857415894` — **SUCCESS**.
+
+See `CLAIM_EVIDENCE_MATRIX.md` for exact claim boundaries.
+
+Runtime exports are generated under `evidence/out/` and uploaded as CI artifacts. They remain ignored in Git to avoid committing transient cluster dumps.
+
+## Evidence rule
+
+Only observed execution may promote a claim. Configuration alone remains `REFERENCE` or `IMPLEMENTED`.
