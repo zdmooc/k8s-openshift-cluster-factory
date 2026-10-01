@@ -1,0 +1,74 @@
+name: Cluster Factory Kind Runtime
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "catalog/**"
+      - "kubernetes/baseline/**"
+      - "runtime/kind/**"
+      - "scripts/bash/cluster-healthcheck.sh"
+      - "scripts/bash/export-audit-evidence.sh"
+      - "scripts/python/**"
+      - ".github/workflows/kind-runtime.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  kind-factory:
+    runs-on: ubuntu-latest
+    env:
+      CLUSTER_NAME: factory-ci
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install Python dependencies
+        run: python -m pip install --disable-pip-version-check -r requirements-ci.txt
+
+      - uses: azure/setup-kubectl@v4
+        with:
+          version: v1.31.0
+
+      - name: Install Kind in writable runner path
+        run: |
+          mkdir -p "$RUNNER_TEMP/bin"
+          curl -fsSLo "$RUNNER_TEMP/bin/kind" https://kind.sigs.k8s.io/dl/v0.24.0/kind-linux-amd64
+          chmod +x "$RUNNER_TEMP/bin/kind"
+          echo "$RUNNER_TEMP/bin" >> "$GITHUB_PATH"
+
+      - name: Validate catalog
+        run: python scripts/python/validate_profiles.py
+
+      - name: Create multi-node cluster
+        run: bash runtime/kind/create-cluster.sh catalog/profiles/k8s-ci-multinode.yaml
+
+      - name: Apply factory baseline
+        run: bash runtime/kind/apply-baseline.sh
+
+      - name: Cluster healthcheck
+        run: bash scripts/bash/cluster-healthcheck.sh
+
+      - name: Factory smoke
+        run: bash runtime/kind/smoke.sh catalog/profiles/k8s-ci-multinode.yaml
+
+      - name: Export evidence
+        run: OUTDIR=evidence/out/ci bash scripts/bash/export-audit-evidence.sh
+
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: kind-factory-evidence
+          path: evidence/out/ci
+          if-no-files-found: warn
+
+      - name: Retire cluster
+        if: always()
+        run: bash runtime/kind/destroy-cluster.sh
