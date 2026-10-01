@@ -1,53 +1,96 @@
-# Cluster Factory — Kubernetes / OpenShift (plateforme industrialisée)
+# Kubernetes / OpenShift Cluster Factory
 
-Dépôt “prêt à cloner” pour construire et opérer une plateforme Kubernetes/OpenShift **orientée expertise & support** (N2/N3),
-dans un environnement Cloud industriel **fortement régulé**.
+**Canonical role:** Cluster Lifecycle / CaaS / Day-2 / N2-N3  
+**Portfolio status:** ACTIVE IMPLEMENTATION / O2  
+**Last governance review:** 2026-10-01
 
-## Objectif
-Fournir des **clusters prêts à l’emploi**, **sécurisés**, **automatisés** et **intégrés au SI** (IAM, réseau, registre, observabilité),
-avec un socle standard (golden baseline) et des variantes maîtrisées (catalogue).
+This repository is the canonical cluster engineering repository of the MayaBank platform portfolio.
 
-## Ce que contient le dépôt
-- **Docs** : architecture (HLD), operating model, sécurité, observabilité, stratégie d’upgrade, catalogue de clusters
-- **Standards** : conventions, RBAC, quotas/limites, baseline réseau
-- **Runbooks N2/N3** : incidents fréquents + checklists de changements
-- **IaC Terraform** : structure de modules + environnements (sandbox/build/preprod/prod) + exemples (AKS/EKS/GKE/OpenShift IPI)
-- **Manifests baseline** : namespaces, quotas, limitranges, networkpolicies, RBAC, PSA/PSS labels
-- **Policies** : Kyverno (exemples) + Gatekeeper/OPA (squelettes)
-- **Observabilité** : règles d’alerting Prometheus (exemples) + dashboards Grafana (squelettes)
-- **Scripts Ops** : healthcheck, drain sûr, export d’évidences, synchronisation kubeconfig
+Its purpose is to turn a **cluster profile** into a qualified Kubernetes/OpenShift execution platform through explicit lifecycle gates: profile, render, create, baseline, health-check, evidence, Day-2 and retirement.
 
-## Quickstart
-1. Lire **docs/00-overview.md** et **docs/06-cluster-catalog.md**
-2. Choisir un profil de cluster (ex: `ocp-prod-standard`)
-3. Déployer le socle (manifests) :
-   ```bash
-   kubectl apply -k kubernetes/baseline
-   # OpenShift: oc apply -k kubernetes/baseline
-   ```
-4. Initialiser l’IaC (Terraform) :
-   ```bash
-   cd terraform/env/sandbox
-   terraform init
-   terraform plan
-   ```
-5. Installer les policies (optionnel mais recommandé) :
-   ```bash
-   kubectl apply -f policies/kyverno
-   ```
+## What is proven vs referenced
 
-## Périmètre (important)
-- Rôle **plateforme** (stabilité, performance, sécurité, évolution cluster)
-- Pas un dépôt CI/CD applicatif : la CI ici sert à **qualifier le dépôt plateforme** (lint, validate, security checks)
+### Executable target
+The first fully automated runtime proof in this repository is a **local multi-node Kubernetes factory using Kind**.
 
-## Structure
-Voir la table des matières dans **docs/** et **runbooks/**.
+### Reference adapters
+OpenShift, RKE2/Rancher and public-cloud provider adapters are maintained as architecture/implementation references until explicit runtime evidence exists.
 
-## Roadmap (vision)
-- Policy-as-Code “enforce by default” + exceptions tracées
-- Signatures d’images + SBOM (supply chain)
-- Self-service contrôlé (catalogue + automatisation day-2)
-- Upgrades continus (N/N-1) avec canary clusters et rollback
+The repository does not claim OpenShift, RKE2, Rancher, AKS, EKS or GKE runtime merely because their configuration exists.
 
----
-Mainteneurs : équipe plateforme Kubernetes/OpenShift
+## Factory flow
+
+```text
+Cluster profile
+    |
+    v
+Validate catalog
+    |
+    v
+Render runtime/provider configuration
+    |
+    v
+Create cluster
+    |
+    v
+Apply baseline
+    |
+    v
+Health + smoke
+    |
+    v
+Capture evidence
+    |
+    v
+Day-2 / maintenance
+    |
+    v
+Retire
+```
+
+## Repository responsibilities
+
+- cluster catalog and profiles;
+- provisioning orchestration;
+- cluster security/network/resource baseline;
+- local Kind factory;
+- OpenShift lifecycle reference;
+- RKE2/Rancher reference adapter;
+- provider contracts for Terraform;
+- health, capacity and maintenance tooling;
+- upgrade/recovery runbooks;
+- evidence capture and claim discipline.
+
+## Portfolio boundary
+
+| Capability | Owner |
+|---|---|
+| OpenShift architecture/standards | `openshift-platform-blueprints` |
+| Cluster lifecycle / CaaS | **this repository** |
+| Shared platform services | `shared-platform-services-openshift` |
+| Argo CD specialist | `argocd-expert-pack` |
+| Keycloak specialist | `keycloak-enterprise-roadmap-v7` |
+| Workload migration | `openshift-migration-framework` |
+
+## Quick paths
+
+- `docs/governance/REPOSITORY_SCOPE.md`
+- `docs/governance/FACTORY_GATES.md`
+- `docs/06-cluster-catalog.md`
+- `catalog/profiles/`
+- `runtime/kind/`
+- `kubernetes/baseline/`
+- `runbooks/`
+- `evidence/`
+
+## Evidence vocabulary
+
+`REFERENCE | IMPLEMENTED | STATIC_VALIDATED | CI_RUNTIME_PROVEN | CRC_RUNTIME_PROVEN | MULTINODE_PROVEN | PRODUCTION_REFERENCE | STALE_REQUALIFICATION_REQUIRED`
+
+## Important truth boundary
+
+A Terraform module validating a cluster specification is not cloud provisioning evidence.
+
+A Kind multi-node cluster proves Kubernetes factory mechanics locally, not OpenShift production readiness.
+
+A CRC run proves OpenShift Local only, not multi-node HA.
