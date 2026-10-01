@@ -1,16 +1,54 @@
-name: platform-repo-ci
+name: Cluster Factory Static CI
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [main]
   pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
 
 jobs:
-  check:
+  static-validation:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v3
-      - name: Run checks
-        run: make check
+
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.9.8
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install Python validation dependencies
+        run: python -m pip install --disable-pip-version-check -r requirements-ci.txt
+
+      - uses: azure/setup-kubectl@v4
+        with:
+          version: v1.31.0
+
+      - name: Static factory checks
+        run: make static-check
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version: "1.24.x"
+
+      - name: Install kubeconform
+        run: |
+          go install github.com/yannh/kubeconform/cmd/kubeconform@v0.6.7
+          echo "$HOME/go/bin" >> "$GITHUB_PATH"
+
+      - name: Validate rendered Kubernetes baseline
+        run: |
+          kubectl kustomize kubernetes/baseline >/tmp/baseline.yaml
+          kubeconform -strict -summary /tmp/baseline.yaml
+
+      - name: Shell syntax checks
+        run: |
+          for file in scripts/bash/*.sh runtime/kind/*.sh runtime/openshift/*.sh; do
+            bash -n "$file"
+          done
