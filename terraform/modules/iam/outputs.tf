@@ -1,4 +1,9 @@
 output "id" {
-  description = "ID du composant (cloud-specific)"
-  value       = null
+  description = "Stable logical IAM identifier."
+  value       = "${var.environment}:${var.name}"
+}
+
+output "contract" {
+  description = "Normalized provider-neutral IAM contract."
+  value       = local.contract
 }
