@@ -7,7 +7,7 @@ locals {
     desired        = var.desired
     instance_class = var.instance_class
     autoscaling    = var.autoscaling
-    tags           = merge(var.tags, {
+    tags = merge(var.tags, {
       managed-by = "k8s-openshift-cluster-factory"
       env        = var.environment
     })
