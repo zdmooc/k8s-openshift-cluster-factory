@@ -1,46 +1,37 @@
 SHELL := /usr/bin/env bash
 
-.PHONY: help fmt lint validate check
+.PHONY: help fmt-check terraform-validate profiles yaml-lint kustomize python-check static-check
 
 help:
 	@echo "Targets:"
-	@echo "  fmt       - format terraform (where present)"
-	@echo "  validate  - terraform validate for env folders"
-	@echo "  lint      - basic lint (yaml + markdown)"
-	@echo "  check     - run all checks"
+	@echo "  fmt-check          - verify Terraform formatting without modifying files"
+	@echo "  terraform-validate - terraform validate for env folders"
+	@echo "  profiles           - validate cluster catalog profiles"
+	@echo "  yaml-lint          - lint YAML in active factory areas"
+	@echo "  kustomize          - render Kubernetes baseline"
+	@echo "  python-check       - compile Python helpers"
+	@echo "  static-check       - run all static checks"
 
-fmt:
+fmt-check:
 	@command -v terraform >/dev/null 2>&1 || { echo "terraform not found"; exit 1; }
-	@find terraform -name '*.tf' -print0 | xargs -0 -r terraform fmt -recursive
+	@terraform fmt -check -recursive terraform
 
-validate:
+terraform-validate:
 	@command -v terraform >/dev/null 2>&1 || { echo "terraform not found"; exit 1; }
-	@for d in terraform/env/* ; do \
-		if [ -d "$$d" ]; then \
-			echo "== terraform validate: $$d"; \
-			( cd "$$d" && terraform init -backend=false -input=false >/dev/null && terraform validate ); \
-		fi; \
-	done
+	@for d in terraform/env/* ; do 		if [ -d "$$d" ]; then 			echo "== terraform validate: $$d"; 			( cd "$$d" && terraform init -backend=false -input=false >/dev/null && terraform validate ); 		fi; 	done
 
-lint:
-	@python3 - <<'PY'
-import sys, pathlib, re
-root = pathlib.Path('.')
-bad = []
-for p in root.rglob('*.md'):
-    txt = p.read_text(encoding='utf-8', errors='ignore')
-    if '\t' in txt:
-        bad.append((str(p),'tab found'))
-for p in root.rglob('*.yaml'):
-    txt = p.read_text(encoding='utf-8', errors='ignore')
-    if '\t' in txt:
-        bad.append((str(p),'tab found'))
-if bad:
-    print('Lint errors:')
-    for f,m in bad:
-        print('-', f, ':', m)
-    sys.exit(1)
-print('OK')
-PY
+profiles:
+	@python3 scripts/python/validate_profiles.py
 
-check: fmt lint validate
+yaml-lint:
+	@yamllint -c .yamllint.yml catalog kubernetes policies runtime
+
+kustomize:
+	@kubectl kustomize kubernetes/baseline >/tmp/cluster-factory-baseline.yaml
+	@test -s /tmp/cluster-factory-baseline.yaml
+
+python-check:
+	@python3 -m compileall -q scripts/python
+
+static-check: fmt-check terraform-validate profiles yaml-lint kustomize python-check
+	@echo "STATIC_CHECK=PASS"
