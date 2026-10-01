@@ -8,7 +8,7 @@ locals {
     control_plane_count = var.control_plane_count
     worker_count        = var.worker_count
     network_id          = var.network_id
-    tags                = merge(var.tags, {
+    tags = merge(var.tags, {
       managed-by = "k8s-openshift-cluster-factory"
       env        = var.environment
     })
