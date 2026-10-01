@@ -15,6 +15,7 @@ Canonical files live under `catalog/profiles/` and are validated against `catalo
 | `ocp-preprod-standard` | OpenShift | reference |
 | `ocp-prod-critical` | OpenShift | reference |
 | `rke2-lab-standard` | RKE2 | reference |
+| `aks-ephemeral-lab` | Azure AKS / managed Kubernetes | reference → cloud runtime promotion |
 
 ## Dimensions
 
