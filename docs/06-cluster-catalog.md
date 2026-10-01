@@ -1,21 +1,43 @@
-# 06 — Catalogue de clusters (profils)
+# 06 — Cluster Catalog
 
-## Modèle
-Un profil = un ensemble de paramètres + baseline + options (features).
+**Status:** IMPLEMENTED / PROFILE_SCHEMA_VALIDATED TARGET
 
-### Exemple de profils
-- `k8s-dev-standard` : coût réduit, non-HA, quotas stricts
-- `k8s-build-ha` : HA, perf CI, accès registry renforcé
-- `ocp-preprod-standard` : proche prod, policies en `enforce`
-- `ocp-prod-critical` : HA, DR/backup renforcé, audit complet
+A cluster profile is a versioned contract describing the intended platform, topology, network, storage, security and lifecycle posture.
+
+Canonical files live under `catalog/profiles/` and are validated against `catalog/schema/cluster-profile.schema.json`.
+
+## Current profiles
+
+| Profile | Platform | Evidence target |
+|---|---|---|
+| `k8s-ci-multinode` | Kind/Kubernetes | CI runtime |
+| `k8s-dev-standard` | Kubernetes | reference |
+| `ocp-preprod-standard` | OpenShift | reference |
+| `ocp-prod-critical` | OpenShift | reference |
+| `rke2-lab-standard` | RKE2 | reference |
 
 ## Dimensions
-- Sizing : nodes, types, autoscaling
-- Réseau : ingress, egress, network segmentation
-- Stockage : tiers, snapshots, encryption
-- Sécurité : PSA/PSS, policies, registries, exceptions
-- Observabilité : dashboards, alerting, log retention
-- Exploitation : patching window, upgrade cadence, SLO
 
-## Fiche de profil (template)
-Voir `docs/templates/RFC-template.md`.
+Every profile defines:
+
+- platform/distribution;
+- environment;
+- expected evidence level;
+- control-plane and worker topology;
+- Pod and Service CIDRs;
+- network-policy posture;
+- storage class and snapshot expectation;
+- Pod Security posture;
+- policy engine;
+- lifecycle/upgrade contract;
+- optional features.
+
+## Factory gates
+
+A profile becomes meaningful only through the gates in `docs/governance/FACTORY_GATES.md`.
+
+`PROFILE_DEFINED` is not the same as `CLUSTER_CREATED`.
+
+## Change policy
+
+Changes to a profile should be reviewed as platform changes because they may alter cost, topology, failure domains, security posture or upgrade behavior.
