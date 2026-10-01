@@ -1,7 +1,7 @@
 # Kubernetes / OpenShift Cluster Factory
 
 **Canonical role:** Cluster Lifecycle / CaaS / Day-2 / N2-N3  
-**Portfolio status:** ACTIVE IMPLEMENTATION / O2  
+**Portfolio status:** O2 COMPLETE / STATIC_VALIDATED + CI_RUNTIME_PROVEN  
 **Last governance review:** 2026-10-01
 
 This repository is the canonical cluster engineering repository of the MayaBank platform portfolio.
@@ -94,3 +94,20 @@ A Terraform module validating a cluster specification is not cloud provisioning 
 A Kind multi-node cluster proves Kubernetes factory mechanics locally, not OpenShift production readiness.
 
 A CRC run proves OpenShift Local only, not multi-node HA.
+
+
+## O2 baseline completed — 2026-10-01
+
+The major O2 implementation program is complete.
+
+Validated evidence:
+- Static CI run `36857552519` — **SUCCESS**;
+- Kind multi-node runtime run `36857415894` — **SUCCESS**;
+- runtime topology: **1 control-plane + 2 workers**;
+- create → baseline → healthcheck → smoke → evidence → destroy all passed.
+
+Current runtime claim: **CI_RUNTIME_PROVEN for local multi-node Kubernetes/Kind factory mechanics**.
+
+OpenShift, RKE2/Rancher and cloud adapters remain at their documented lower evidence levels.
+
+Completion record: `docs/governance/O2_COMPLETION.md`.
