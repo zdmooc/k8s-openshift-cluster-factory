@@ -14,7 +14,7 @@ help:
 
 fmt-check:
 	@command -v terraform >/dev/null 2>&1 || { echo "terraform not found"; exit 1; }
-	@terraform fmt -check -recursive terraform
+	@terraform fmt -check -diff -recursive terraform
 
 terraform-validate:
 	@command -v terraform >/dev/null 2>&1 || { echo "terraform not found"; exit 1; }
