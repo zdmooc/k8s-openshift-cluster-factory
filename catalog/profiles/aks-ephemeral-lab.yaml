@@ -1,0 +1,33 @@
+apiVersion: factory.mayabank.example/v1alpha1
+kind: ClusterProfile
+metadata:
+  name: aks-ephemeral-lab
+  description: Ephemeral Azure AKS profile for MayaBank cloud interview evidence.
+spec:
+  platform: kubernetes
+  environment: sandbox
+  evidenceTarget: REFERENCE
+  topology:
+    controlPlane: 1
+    workers: 1
+  network:
+    podCIDR: 10.244.0.0/16
+    serviceCIDR: 10.96.0.0/16
+    policy: provider-default
+  storage:
+    class: managed-csi
+    snapshots: true
+  security:
+    podSecurity: restricted
+    policyEngine: none
+  lifecycle:
+    upgradeChannel: pinned-lab
+    backupRequired: false
+  features:
+    - azure-aks
+    - oidc
+    - workload-identity
+    - baseline
+    - healthcheck
+    - evidence-export
+    - ephemeral-retirement
