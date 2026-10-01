@@ -1,0 +1,30 @@
+apiVersion: factory.mayabank.example/v1alpha1
+kind: ClusterProfile
+metadata:
+  name: ocp-preprod-standard
+  description: OpenShift preproduction reference profile.
+spec:
+  platform: openshift
+  environment: preprod
+  evidenceTarget: REFERENCE
+  topology:
+    controlPlane: 3
+    workers: 3
+  network:
+    podCIDR: 10.128.0.0/14
+    serviceCIDR: 172.30.0.0/16
+    policy: default-deny
+  storage:
+    class: managed-csi
+    snapshots: true
+  security:
+    podSecurity: restricted
+    policyEngine: kyverno
+  lifecycle:
+    upgradeChannel: stable
+    backupRequired: true
+  features:
+    - baseline
+    - openshift-routes
+    - operator-lifecycle
+    - observability-contract

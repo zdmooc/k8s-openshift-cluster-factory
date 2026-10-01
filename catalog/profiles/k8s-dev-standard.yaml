@@ -1,0 +1,28 @@
+apiVersion: factory.mayabank.example/v1alpha1
+kind: ClusterProfile
+metadata:
+  name: k8s-dev-standard
+  description: Cost-conscious Kubernetes development profile.
+spec:
+  platform: kubernetes
+  environment: sandbox
+  evidenceTarget: REFERENCE
+  topology:
+    controlPlane: 1
+    workers: 2
+  network:
+    podCIDR: 10.244.0.0/16
+    serviceCIDR: 10.96.0.0/16
+    policy: default-deny
+  storage:
+    class: standard
+    snapshots: false
+  security:
+    podSecurity: baseline
+    policyEngine: kyverno
+  lifecycle:
+    upgradeChannel: stable
+    backupRequired: false
+  features:
+    - baseline
+    - observability-contract

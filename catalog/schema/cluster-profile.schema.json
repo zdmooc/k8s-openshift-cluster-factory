@@ -1,0 +1,177 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Cluster Factory Profile",
+  "type": "object",
+  "required": [
+    "apiVersion",
+    "kind",
+    "metadata",
+    "spec"
+  ],
+  "properties": {
+    "apiVersion": {
+      "const": "factory.mayabank.example/v1alpha1"
+    },
+    "kind": {
+      "const": "ClusterProfile"
+    },
+    "metadata": {
+      "type": "object",
+      "required": [
+        "name"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^[a-z0-9]([-a-z0-9]*[a-z0-9])?$"
+        },
+        "description": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "spec": {
+      "type": "object",
+      "required": [
+        "platform",
+        "environment",
+        "evidenceTarget",
+        "topology",
+        "network",
+        "storage",
+        "security",
+        "lifecycle"
+      ],
+      "properties": {
+        "platform": {
+          "enum": [
+            "kubernetes-kind",
+            "kubernetes",
+            "openshift",
+            "rke2"
+          ]
+        },
+        "environment": {
+          "enum": [
+            "ci",
+            "sandbox",
+            "build",
+            "preprod",
+            "prod"
+          ]
+        },
+        "evidenceTarget": {
+          "enum": [
+            "CI_RUNTIME_PROVEN",
+            "CRC_RUNTIME_PROVEN",
+            "MULTINODE_PROVEN",
+            "REFERENCE"
+          ]
+        },
+        "topology": {
+          "type": "object",
+          "required": [
+            "controlPlane",
+            "workers"
+          ],
+          "properties": {
+            "controlPlane": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 9
+            },
+            "workers": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 100
+            }
+          }
+        },
+        "network": {
+          "type": "object",
+          "required": [
+            "podCIDR",
+            "serviceCIDR",
+            "policy"
+          ],
+          "properties": {
+            "podCIDR": {
+              "type": "string"
+            },
+            "serviceCIDR": {
+              "type": "string"
+            },
+            "policy": {
+              "enum": [
+                "default-deny",
+                "provider-default"
+              ]
+            }
+          }
+        },
+        "storage": {
+          "type": "object",
+          "required": [
+            "class",
+            "snapshots"
+          ],
+          "properties": {
+            "class": {
+              "type": "string"
+            },
+            "snapshots": {
+              "type": "boolean"
+            }
+          }
+        },
+        "security": {
+          "type": "object",
+          "required": [
+            "podSecurity",
+            "policyEngine"
+          ],
+          "properties": {
+            "podSecurity": {
+              "enum": [
+                "baseline",
+                "restricted"
+              ]
+            },
+            "policyEngine": {
+              "enum": [
+                "none",
+                "kyverno",
+                "gatekeeper"
+              ]
+            }
+          }
+        },
+        "lifecycle": {
+          "type": "object",
+          "required": [
+            "upgradeChannel",
+            "backupRequired"
+          ],
+          "properties": {
+            "upgradeChannel": {
+              "type": "string"
+            },
+            "backupRequired": {
+              "type": "boolean"
+            }
+          }
+        },
+        "features": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}
