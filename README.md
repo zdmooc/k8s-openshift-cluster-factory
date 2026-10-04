@@ -1,12 +1,26 @@
 # Kubernetes / OpenShift Cluster Factory
 
-**Canonical role:** Cluster Lifecycle / CaaS / Day-2 / N2-N3  
+**Canonical role:** Infrastructure Solution Architecture / Cluster Lifecycle / CaaS / Day-2 / N2-N3  
 **Portfolio status:** O2 COMPLETE / STATIC_VALIDATED + CI_RUNTIME_PROVEN  
-**Last governance review:** 2026-10-01
+**Last governance review:** 2026-10-04 — D-095
 
 This repository is the canonical cluster engineering repository of the MayaBank platform portfolio.
 
 Its purpose is to turn a **cluster profile** into a qualified Kubernetes/OpenShift execution platform through explicit lifecycle gates: profile, render, create, baseline, health-check, evidence, Day-2 and retirement.
+
+
+## D-095 — Infrastructure Solution Architecture
+
+This repository is the **flagship owner** for the D-095 Architecte Solutions Infrastructure convergence.
+
+New architecture assets:
+- `docs/02-infrastructure-private-cloud-hld.md`;
+- `docs/adr/ADR-001-vm-vs-containers.md`;
+- `docs/adr/ADR-002-kubernetes-vs-openshift.md`;
+- `docs/adr/ADR-003-private-cloud-platform-choice.md`;
+- `docs/demos/D095_INFRASTRUCTURE_ARCHITECT_DEMO.md`.
+
+D-095 adds an explicit Infrastructure/Private-Cloud decision layer without claiming VMware, OpenStack, Nutanix or KVM runtime that has not been executed.
 
 ## What is proven vs referenced
 
