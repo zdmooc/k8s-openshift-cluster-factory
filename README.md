@@ -15,6 +15,7 @@ This repository is the **flagship owner** for the D-095 Architecte Solutions Inf
 
 New architecture assets:
 - `docs/02-infrastructure-private-cloud-hld.md`;
+- `docs/03-infrastructure-industrialization.md`;
 - `docs/adr/ADR-001-vm-vs-containers.md`;
 - `docs/adr/ADR-002-kubernetes-vs-openshift.md`;
 - `docs/adr/ADR-003-private-cloud-platform-choice.md`;
