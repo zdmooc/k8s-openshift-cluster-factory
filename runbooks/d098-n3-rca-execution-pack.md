@@ -1,6 +1,6 @@
 # D-098 — N3 / Troubleshooting / RCA Execution Pack
 
-**Status:** PREPARED / RUNTIME EXECUTION PENDING
+**Status:** 3 CORE/REAL SCENARIOS PROVEN + DNS/POD REVALIDATION PENDING
 
 Each scenario follows:
 `inject/real incident -> observe -> diagnose -> RCA -> recover -> prevent -> evidence`.
@@ -22,7 +22,7 @@ Evidence:
 
 This real incident replaces the need to manufacture a scheduler-memory fault.
 
-## Scenario 1 — DNS / NetworkPolicy
+## Scenario 1 — DNS / NetworkPolicy — ATTEMPT 1 DIAGNOSED / REVALIDATION PENDING
 
 Injection options:
 - deny egress to DNS on an isolated fixture namespace; or
@@ -43,6 +43,21 @@ Recover:
 
 RCA expected:
 policy blocked a required dependency while DNS/control plane remained healthy.
+
+Attempt 1:
+- baseline DNS PASS;
+- deny-all egress PASS;
+- first recovery allowing port 53 only FAILED;
+- OpenShift DNS target-port behavior identified as the missing recovery detail.
+
+Correction:
+allow `openshift-dns` namespace on TCP/UDP 53 and 5353 and capture the DNS Service/Endpoints.
+
+Evidence:
+`evidence/d098/20261006-sqy4-dns-attempt1.md`.
+
+Corrected automation:
+`runtime/openshift/d098-n3-dns-networkpolicy-fixture.sh`.
 
 Residual live triage:
 `runtime/openshift/d098-residual-triage.sh`.
@@ -69,6 +84,12 @@ Diagnose:
 
 Recover:
 - revert Git revision / corrected manifest and reconcile via GitOps.
+
+Disposable pod/deployment automation:
+`runtime/openshift/d098-n3-pod-deployment-fixture.sh`.
+
+The fixture injects an invalid image reference, waits for `ErrImagePull/ImagePullBackOff`,
+then restores a valid Red Hat UBI image and requires Deployment rollout success.
 
 ## Scenario 3 — PVC / storage — RUNTIME PROVEN
 
@@ -98,7 +119,7 @@ Runtime evidence:
 Observed marker:
 `D098_N3_STORAGE_RCA_RUNTIME_PROVEN=PASS`.
 
-## Scenario 4 — OIDC or telemetry
+## Scenario 4 — OIDC / telemetry — RUNTIME PROVEN BY REUSE
 
 Injection:
 - disposable wrong issuer/audience, or isolated telemetry endpoint misconfiguration.
@@ -114,6 +135,12 @@ Diagnose:
 
 Recover:
 - restore canonical identity/telemetry contract.
+
+Reused runtime evidence:
+- I22 OAuth2/JWT: anonymous denied, wrong-scope 403, least-privilege enforcement, client-secret rotation with old secret rejected and new secret accepted;
+- D-093/I33: authenticated product request produced a real `payment-orchestrator` trace in Shared OTel and collector configuration was restored.
+
+This satisfies the identity/telemetry RCA slice without manufacturing a second destructive fault.
 
 ## Evidence bundle per incident
 
@@ -137,5 +164,16 @@ Never inject failures into retained stateful business data without explicit appr
 
 ## Gate
 
-After all four scenarios are executed and evidenced:
+After DNS recovery and the disposable pod/deployment recovery are both successfully revalidated,
+the four required slices will be complete and the gate may be promoted:
+
 `N3_RCA_PACK_RUNTIME_PROVEN`.
+
+Current proven slices:
+- capacity pressure (supplementary real incident);
+- PVC/storage;
+- OIDC/telemetry.
+
+Pending:
+- DNS/NetworkPolicy corrected recovery;
+- pod/deployment disposable recovery.
