@@ -40,7 +40,8 @@ Prepared on 2026-10-06:
 - `scripts/bash/d098-secops-observability-preflight.sh` — read-only SQY-5 inventory;
 - `evidence/D098_SQY_RUNTIME_EVIDENCE_TEMPLATE.md` — runtime evidence template;
 - `docs/demos/D098_SQY_CAAS_DEMO.md` — mission demo storyline;
-- `docs/demos/D098_SQY_INTERVIEW_PACK.md` — pitch 30 s / 2 min + 20 Q/R.
+- `docs/demos/D098_SQY_INTERVIEW_PACK.md` — pitch 30 s / 2 min + 20 Q/R;
+- `docs/demos/D098_SQY_RUNTIME_EXECUTION_PLAN.md` — ordre user-assisted Kind -> CRC -> evidence -> Kind.
 
 Current D-098 status in this repository:
 `SQY-1 ARCHITECTURE_READY / SQY-2 PREPARED / SQY-3 DESIGN_READY / SQY-4 PREPARED / SQY-5 PREPARED / SQY-6 ARCHITECTURE_READY / SQY-7 STORYLINE + INTERVIEW_DRAFT_READY`.
