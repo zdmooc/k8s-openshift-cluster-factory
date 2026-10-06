@@ -1,6 +1,6 @@
 # D-098 — N3 / Troubleshooting / RCA Execution Pack
 
-**Status:** DNS + STORAGE + OIDC/OTEL + CAPACITY PROVEN / POD-DEPLOYMENT PENDING
+**Status:** CLOSED / N3_RCA_PACK_RUNTIME_PROVEN
 
 Each scenario follows:
 `inject/real incident -> observe -> diagnose -> RCA -> recover -> prevent -> evidence`.
@@ -74,7 +74,7 @@ Supplementary real ImagePullBackOff RCA:
 Observed root cause: unauthenticated external registry pull-rate limit.
 Recovery remains intentionally separate from the core gate.
 
-## Scenario 2 — Pod / Deployment failure
+## Scenario 2 — Pod / Deployment failure — RUNTIME PROVEN
 
 Injection:
 - invalid image tag or failed readiness probe on a disposable fixture.
@@ -94,8 +94,17 @@ Recover:
 Disposable pod/deployment automation:
 `runtime/openshift/d098-n3-pod-deployment-fixture.sh`.
 
-The fixture injects an invalid image reference, waits for `ErrImagePull/ImagePullBackOff`,
-then restores a valid Red Hat UBI image and requires Deployment rollout success.
+The bounded scenario was executed through the SQY-3 migration rehearsal:
+- healthy Route smoke;
+- invalid image injection;
+- `ErrImagePull/ImagePullBackOff`;
+- previous revision kept serving;
+- `oc rollout undo`;
+- approved image restored;
+- post-rollback smoke PASS.
+
+Runtime evidence:
+`evidence/d098/20261006-sqy4-pod-deployment-rca-runtime-proven.md`.
 
 ## Scenario 3 — PVC / storage — RUNTIME PROVEN
 
@@ -170,14 +179,14 @@ Never inject failures into retained stateful business data without explicit appr
 
 ## Gate
 
-After the disposable pod/deployment recovery is successfully revalidated, the four required slices will be complete and the gate may be promoted:
-
-`N3_RCA_PACK_RUNTIME_PROVEN`.
-
-Current proven slices:
-- capacity pressure (supplementary real incident);
+All required core slices are now evidenced:
+- DNS/NetworkPolicy;
+- pod/deployment;
 - PVC/storage;
 - OIDC/telemetry.
 
-Pending:
-- pod/deployment disposable recovery.
+Supplementary real incident:
+- CRC scheduler memory pressure/capacity recovery.
+
+Final gate:
+`N3_RCA_PACK_RUNTIME_PROVEN=TRUE`.
