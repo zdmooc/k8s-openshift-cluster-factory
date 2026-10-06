@@ -31,9 +31,14 @@ Prepared on 2026-10-06:
 - `docs/10-d098-sqy-caas-onprem-hld.md` — CaaS On-Premise HLD;
 - `docs/11-d098-upgrade-migration-day2.md` — lifecycle / upgrade / migration;
 - `docs/12-d098-enterprise-extensions.md` — RKE2/Rancher, network, storage, AD/CMDB;
+- `docs/13-d098-secops-observability-preparation.md` — SQY-5 acceptance pack;
+- `docs/14-d098-dual-runtime-kind-crc.md` — local Kind <-> CRC operating model;
+- `docs/15-d098-enterprise-extension-decision-matrix.md` — selective enterprise technology decisions;
 - `runbooks/d098-n3-rca-execution-pack.md` — four N3/RCA scenarios;
 - `runtime/openshift/d098-sqy-readonly-assessment.sh` — read-only CRC/OpenShift inventory;
+- `runtime/openshift/d098-upgrade-readiness.sh` — read-only lifecycle/upgrade readiness;
 - `scripts/bash/d098-secops-observability-preflight.sh` — read-only SQY-5 inventory;
+- `evidence/D098_SQY_RUNTIME_EVIDENCE_TEMPLATE.md` — runtime evidence template;
 - `docs/demos/D098_SQY_CAAS_DEMO.md` — mission demo storyline.
 
 Current D-098 status in this repository:
