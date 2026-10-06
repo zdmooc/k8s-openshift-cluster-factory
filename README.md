@@ -2,7 +2,7 @@
 
 **Canonical role:** Infrastructure Solution Architecture / Cluster Lifecycle / CaaS / Day-2 / N2-N3  
 **Portfolio status:** O2 COMPLETE / STATIC_VALIDATED + CI_RUNTIME_PROVEN  
-**Last governance review:** 2026-10-04 — D-095
+**Last governance review:** 2026-10-06 — D-095 / D-098
 
 This repository is the canonical cluster engineering repository of the MayaBank platform portfolio.
 
@@ -22,6 +22,24 @@ New architecture assets:
 - `docs/demos/D095_INFRASTRUCTURE_ARCHITECT_DEMO.md`.
 
 D-095 adds an explicit Infrastructure/Private-Cloud decision layer without claiming VMware, OpenStack, Nutanix or KVM runtime that has not been executed.
+
+## D-098 — IT-EXPLORER SQY CaaS mission pack
+
+This repository is the **flagship CaaS owner** for D-098.
+
+Prepared on 2026-10-06:
+- `docs/10-d098-sqy-caas-onprem-hld.md` — CaaS On-Premise HLD;
+- `docs/11-d098-upgrade-migration-day2.md` — lifecycle / upgrade / migration;
+- `docs/12-d098-enterprise-extensions.md` — RKE2/Rancher, network, storage, AD/CMDB;
+- `runbooks/d098-n3-rca-execution-pack.md` — four N3/RCA scenarios;
+- `runtime/openshift/d098-sqy-readonly-assessment.sh` — read-only CRC/OpenShift inventory;
+- `scripts/bash/d098-secops-observability-preflight.sh` — read-only SQY-5 inventory;
+- `docs/demos/D098_SQY_CAAS_DEMO.md` — mission demo storyline.
+
+Current D-098 status in this repository:
+`SQY-1 ARCHITECTURE_READY / SQY-2 PREPARED / SQY-3 DESIGN_READY / SQY-4 PREPARED / SQY-5 PREPARED / SQY-6 ARCHITECTURE_READY / SQY-7 STORYLINE_READY`.
+
+Runtime promotion remains evidence-driven.
 
 ## What is proven vs referenced
 
