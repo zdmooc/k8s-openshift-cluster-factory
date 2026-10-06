@@ -43,9 +43,12 @@ spec:
         cpu: 50m
         memory: 96Mi
     securityContext:
+      runAsNonRoot: true
       allowPrivilegeEscalation: false
       capabilities:
         drop: ["ALL"]
+      seccompProfile:
+        type: RuntimeDefault
 EOF
 
 if ! oc -n "$NS" wait --for=condition=Ready pod/dns-client --timeout=180s; then
@@ -91,6 +94,14 @@ fi
 echo "D098_DNS_DENIED_BY_NETWORKPOLICY=PASS"
 
 echo "===== RECOVER DNS EGRESS ====="
+oc -n openshift-dns get svc dns-default -o wide | tee "$OUT/openshift-dns-service.txt" || true
+oc -n openshift-dns get endpoints dns-default -o wide | tee "$OUT/openshift-dns-endpoints.txt" || true
+oc -n "$NS" exec dns-client -- cat /etc/resolv.conf | tee "$OUT/resolv-conf.txt" || true
+
+# On OpenShift/OVN-Kubernetes the DNS Service exposes 53 but the selected DNS pods
+# commonly receive the post-DNAT traffic on targetPort 5353. NetworkPolicy is
+# evaluated against the pod-side destination, so allow both service and target
+# ports to the openshift-dns namespace.
 cat <<EOF | oc apply -f - | tee "$OUT/allow-dns-policy.txt"
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
@@ -104,11 +115,19 @@ spec:
   policyTypes:
   - Egress
   egress:
-  - ports:
+  - to:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: openshift-dns
+    ports:
     - protocol: UDP
       port: 53
     - protocol: TCP
       port: 53
+    - protocol: UDP
+      port: 5353
+    - protocol: TCP
+      port: 5353
 EOF
 
 RECOVERED=false
