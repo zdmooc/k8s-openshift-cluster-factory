@@ -72,6 +72,17 @@ echo "===== D098 N3 CAPACITY — RESTART CRC AT ${TARGET_MB} MiB ====="
 crc stop | tee "$OUT/crc-stop.txt"
 crc config set memory "$TARGET_MB" | tee "$OUT/crc-config-set.txt"
 
+case "${MSYSTEM:-}" in
+  MINGW*|MSYS*|CYGWIN*)
+    echo "D098_N3_CAPACITY_PREPARED_FOR_MANUAL_START=PASS" | tee "$OUT/result-prepared.txt"
+    echo "[STOP-SAFE] Windows Git Bash detected."
+    echo "[NEXT] Open a fresh Git Bash terminal and run: crc start"
+    echo "[THEN] bash runtime/openshift/d098-n3-capacity-verify-after-manual-start.sh"
+    echo "[INFO] This split avoids the observed MSYS TP_NUM_C_BUFS process-buffer failure."
+    exit 0
+    ;;
+esac
+
 START_LOG="$OUT/crc-start-private.log"
 if ! crc start >"$START_LOG" 2>&1; then
   echo "[FAIL] CRC failed to start at ${TARGET_MB} MiB."
