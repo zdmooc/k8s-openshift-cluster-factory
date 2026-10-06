@@ -88,6 +88,21 @@ Follow:
 
 Use only the disposable fixture. No retained payment/Data/MQ state.
 
+### Windows / Git Bash CRC restart rule
+
+On this workstation, a long-running Bash script must **not** invoke `crc start` after many prior
+subprocesses/pipelines. One observed run failed inside Git for Windows/MSYS with:
+
+`fatal error - Internal error: TP_NUM_C_BUFS too small: 50`.
+
+For CRC memory/capacity recovery:
+1. use `d098-n3-capacity-recovery.sh` only to capture BEFORE state, stop CRC and set target memory;
+2. on Windows/Git Bash the script exits safely with `D098_N3_CAPACITY_PREPARED_FOR_MANUAL_START=PASS`;
+3. open a fresh Git Bash terminal and run `crc start` interactively;
+4. run `runtime/openshift/d098-n3-capacity-verify-after-manual-start.sh`.
+
+This is a shell/process-boundary issue, not a valid OpenShift failure claim.
+
 ## 4. SQY-4 — N3 / RCA
 
 Follow:
