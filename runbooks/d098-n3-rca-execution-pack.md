@@ -1,6 +1,6 @@
 # D-098 — N3 / Troubleshooting / RCA Execution Pack
 
-**Status:** 3 CORE/REAL SCENARIOS PROVEN + DNS/POD REVALIDATION PENDING
+**Status:** DNS + STORAGE + OIDC/OTEL + CAPACITY PROVEN / POD-DEPLOYMENT PENDING
 
 Each scenario follows:
 `inject/real incident -> observe -> diagnose -> RCA -> recover -> prevent -> evidence`.
@@ -22,7 +22,7 @@ Evidence:
 
 This real incident replaces the need to manufacture a scheduler-memory fault.
 
-## Scenario 1 — DNS / NetworkPolicy — ATTEMPT 1 DIAGNOSED / REVALIDATION PENDING
+## Scenario 1 — DNS / NetworkPolicy — RUNTIME PROVEN
 
 Injection options:
 - deny egress to DNS on an isolated fixture namespace; or
@@ -58,6 +58,12 @@ Evidence:
 
 Corrected automation:
 `runtime/openshift/d098-n3-dns-networkpolicy-fixture.sh`.
+
+Runtime evidence:
+`evidence/d098/20261006-sqy4-dns-networkpolicy-runtime-proven.md`.
+
+Observed marker:
+`D098_N3_DNS_NETWORKPOLICY_RUNTIME_PROVEN=PASS`.
 
 Residual live triage:
 `runtime/openshift/d098-residual-triage.sh`.
@@ -164,8 +170,7 @@ Never inject failures into retained stateful business data without explicit appr
 
 ## Gate
 
-After DNS recovery and the disposable pod/deployment recovery are both successfully revalidated,
-the four required slices will be complete and the gate may be promoted:
+After the disposable pod/deployment recovery is successfully revalidated, the four required slices will be complete and the gate may be promoted:
 
 `N3_RCA_PACK_RUNTIME_PROVEN`.
 
@@ -175,5 +180,4 @@ Current proven slices:
 - OIDC/telemetry.
 
 Pending:
-- DNS/NetworkPolicy corrected recovery;
 - pod/deployment disposable recovery.
