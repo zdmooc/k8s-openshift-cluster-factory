@@ -47,6 +47,12 @@ policy blocked a required dependency while DNS/control plane remained healthy.
 Residual live triage:
 `runtime/openshift/d098-residual-triage.sh`.
 
+Supplementary real ImagePullBackOff RCA:
+`evidence/d098/20261006-redpanda-imagepullbackoff-rca.md`.
+
+Observed root cause: unauthenticated external registry pull-rate limit.
+Recovery remains intentionally separate from the core gate.
+
 ## Scenario 2 — Pod / Deployment failure
 
 Injection:
@@ -64,7 +70,7 @@ Diagnose:
 Recover:
 - revert Git revision / corrected manifest and reconcile via GitOps.
 
-## Scenario 3 — PVC / storage
+## Scenario 3 — PVC / storage — RUNTIME PROVEN
 
 Injection:
 - isolated fixture with impossible StorageClass or bounded mount/config error.
@@ -85,6 +91,12 @@ Do not manipulate retained business data.
 
 Disposable storage automation:
 `runtime/openshift/d098-n3-storage-fixture.sh`.
+
+Runtime evidence:
+`evidence/d098/20261006-sqy4-storage-rca-runtime-proven.md`.
+
+Observed marker:
+`D098_N3_STORAGE_RCA_RUNTIME_PROVEN=PASS`.
 
 ## Scenario 4 — OIDC or telemetry
 
