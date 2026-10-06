@@ -3,7 +3,24 @@
 **Status:** PREPARED / RUNTIME EXECUTION PENDING
 
 Each scenario follows:
-`inject -> observe -> diagnose -> RCA -> recover -> prevent -> evidence`.
+`inject/real incident -> observe -> diagnose -> RCA -> recover -> prevent -> evidence`.
+
+## Scenario 0 — Capacity pressure (real incident) — RUNTIME PROVEN
+
+Observed on CRC at 16384 MiB:
+- 34 unscheduled pods;
+- 8842 MiB unscheduled memory requests;
+- broad FailedScheduling/Insufficient memory impact.
+
+Recovered at 24576 MiB:
+- 1 unscheduled pod;
+- 1024 MiB unscheduled memory requests;
+- GitOps server, Platform Operator and OTel Collector 1/1 Ready.
+
+Evidence:
+`evidence/d098/20261006-sqy4-capacity-rca-runtime-proven.md`.
+
+This real incident replaces the need to manufacture a scheduler-memory fault.
 
 ## Scenario 1 — DNS / NetworkPolicy
 
@@ -26,6 +43,9 @@ Recover:
 
 RCA expected:
 policy blocked a required dependency while DNS/control plane remained healthy.
+
+Residual live triage:
+`runtime/openshift/d098-residual-triage.sh`.
 
 ## Scenario 2 — Pod / Deployment failure
 
@@ -62,6 +82,9 @@ Recover:
 - restore supported StorageClass or fixture configuration.
 
 Do not manipulate retained business data.
+
+Disposable storage automation:
+`runtime/openshift/d098-n3-storage-fixture.sh`.
 
 ## Scenario 4 — OIDC or telemetry
 
