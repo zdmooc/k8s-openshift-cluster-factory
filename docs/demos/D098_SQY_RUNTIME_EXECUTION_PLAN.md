@@ -1,6 +1,6 @@
 # D-098 — SQY Runtime Execution Plan
 
-**Status:** PREPARED / USER-ASSISTED LOCAL EXECUTION REQUIRED  
+**Status:** CLOSED FOR MISSION / OPTIONAL LOCAL RUNTIME OPERATIONS REMAIN  
 **Workstation:** Windows + Git Bash + Docker Desktop + CRC/OpenShift Local
 
 This plan is intentionally split into read-only capture first, then bounded runtime tests.
@@ -154,9 +154,11 @@ oc get events -A --sort-by=.lastTimestamp | tail -100
 
 Sanitize any evidence before commit.
 
-## 7. Return CRC -> Kind
+## 7. Optional return CRC -> Kind
 
-From `enterprise-data-lakehouse-kubernetes-openshift`:
+The CRC -> Kind return is not required to close D-098 mission preparation. Keep CRC active when OpenShift-specific demonstration work is the priority.
+
+When resuming the retained Data Lakehouse lab, use:
 
 ~~~bash
 CONFIRM_DEMO_SWITCH=yes bash demo/scripts/01-switch-crc-to-kind.sh
@@ -169,7 +171,7 @@ If Polaris metadata is missing:
 CONFIRM_DEMO_RECOVERY=yes bash demo/scripts/03-restore-i12.sh
 ~~~
 
-This is metadata-only recovery of retained Iceberg state.
+This remains a bounded local-lab operation and metadata-only recovery of retained Iceberg state.
 
 ## 8. Final gates
 
@@ -180,7 +182,8 @@ SQY-2 -> OPENSHIFT_CAAS_RUNTIME_PACK_READY
 SQY-3 -> LIFECYCLE_UPGRADE_MIGRATION_PACK_READY
 SQY-4 -> N3_RCA_PACK_RUNTIME_PROVEN
 SQY-5 -> CAAS_SECOPS_OBSERVABILITY_PACK_READY
-SQY-7 -> IT_EXPLORER_SQY_PORTFOLIO_READY
+SQY-7 -> IT_EXPLORER_SQY_PORTFOLIO_READY / CLOSED
+D-098 -> D098_MISSION_PREPARATION=CLOSED
 ~~~
 
 No gate is promoted merely because a script exists.
