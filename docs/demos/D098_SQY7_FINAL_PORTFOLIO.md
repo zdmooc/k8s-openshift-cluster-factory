@@ -1,7 +1,7 @@
 # D-098 — SQY-7 Final Mission Portfolio
 
 **Date:** 2026-10-07  
-**Status:** `SQY7_ARTIFACTS_READY / LOCAL_RETURN_KIND_PENDING`
+**Status:** `CLOSED / IT_EXPLORER_SQY_PORTFOLIO_READY`
 
 ## Mission positioning
 
@@ -77,27 +77,18 @@ Data Lakehouse on 3-node Kind:
 - Vault/CyberArk remain integration patterns in this pack.
 - final client remains unconfirmed.
 
-## Final local gate still pending
+## Closure decision
 
-Return CRC → retained Kind cluster:
+SQY-7 is closed for the IT-EXPLORER mission preparation.
 
-```bash
-cd /c/workspaces/enterprise-data-lakehouse-kubernetes-openshift
-CONFIRM_DEMO_SWITCH=yes bash demo/scripts/01-switch-crc-to-kind.sh
-```
+The CRC -> retained Kind return is an **optional local-lab operation**, not a mission-closure gate. CRC may remain active because it is the most directly demonstrable runtime for the target Kubernetes/OpenShift mission. Return to Kind is performed only when resuming the Data Lakehouse lab or when an explicit round-trip proof is required.
 
-Then verify:
-- current context `kind-edl-lab`;
-- 3 Kind nodes Ready;
-- retained node mapping preserved;
-- retained Data Lakehouse state and smoke still valid.
-
-Only after this final return verification should D-098 be marked fully closed.
+The recorded 4–6 minute video is **WAIVED / NON-BLOCKING** for this closure. The editable 10-slide deck, PDF, targeted CV, interview pack and 10–15 minute live demo sequence are the canonical mission artifacts.
 
 ## Gate
 
-`SQY7_ARTIFACTS_READY=TRUE`
+`SQY7_CLOSED=TRUE`  
+`IT_EXPLORER_SQY_PORTFOLIO_READY=TRUE`  
+`D098_MISSION_PREPARATION=CLOSED`
 
-D-098 overall closeout remains:
-
-`FINAL_LOCAL_RETURN_VALIDATION_PENDING`.
+Truth boundaries remain unchanged.
