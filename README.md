@@ -44,9 +44,9 @@ Prepared on 2026-10-06:
 - `docs/demos/D098_SQY_RUNTIME_EXECUTION_PLAN.md` — ordre user-assisted Kind -> CRC -> evidence -> Kind.
 
 Current D-098 status in this repository:
-`SQY-1 ARCHITECTURE_READY / SQY-2 PREPARED / SQY-3 DESIGN_READY / SQY-4 PREPARED / SQY-5 PREPARED / SQY-6 ARCHITECTURE_READY / SQY-7 STORYLINE + INTERVIEW_DRAFT_READY`.
+`SQY-1 CLOSED / SQY-2 CLOSED / SQY-3 CLOSED / SQY-4 CLOSED / SQY-5 CLOSED / SQY-6 CLOSED AT ARCHITECTURE GATE / SQY-7 CLOSED / IT_EXPLORER_SQY_PORTFOLIO_READY`.
 
-Runtime promotion remains evidence-driven.
+Runtime promotion remains evidence-driven. D-098 mission preparation is CLOSED; CRC -> Kind return remains optional and non-blocking.
 
 ## What is proven vs referenced
 
