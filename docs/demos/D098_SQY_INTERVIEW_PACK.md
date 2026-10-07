@@ -1,10 +1,24 @@
 # D-098 — SQY Expert Kubernetes / OpenShift — Interview Pack
 
-**Status:** DRAFT_READY / FINAL RUNTIME EVIDENCE PENDING
+**Status:** FINAL_READY / RUNTIME EVIDENCE CONSOLIDATED
+
+## Runtime closure — 2026-10-06
+
+D-098 now has bounded evidence for:
+- OpenShift Local / CRC 4.22.7 health and OpenShift-specific controls;
+- GitOps / Platform Operator onboarding;
+- upgrade-readiness with explicit `ClusterVersionOverridesSet` blocker;
+- stateless migration rehearsal with Route smoke, broken image release, service continuity and `oc rollout undo`;
+- N3/RCA scenarios DNS/NetworkPolicy, Pod/Deployment, PVC/Storage and OIDC/OTel;
+- SCC positive/negative admission;
+- Alertmanager/Prometheus/Loki/OTel;
+- Trivy, Cosign and Kyverno bounded supply-chain proof.
+
+Truth boundary remains explicit: CRC is single-node, Kind is local multi-node, and architecture-only enterprise extensions are not promoted to runtime claims.
 
 ## Pitch 30 seconds
 
-Architecte Solutions / Technique & Transverse avec une forte orientation Kubernetes/OpenShift, CaaS, GitOps et Platform Engineering. Mon portefeuille démontre un Cluster Factory multi-node Kubernetes, des preuves OpenShift Local sur SCC, GitOps et Platform Operator, ainsi qu'un workload Data Lakehouse complet. Pour cette mission, je positionne le cœur sur le lifecycle CaaS, la sécurité, l'observabilité, les upgrades et le support N3, en distinguant strictement lab local et production.
+Architecte Solutions / Technique & Transverse senior avec une forte orientation Kubernetes/OpenShift, CaaS, GitOps et Platform Engineering. Mon portefeuille démontre un Cluster Factory multi-node Kubernetes, des preuves OpenShift Local sur SCC, GitOps et Platform Operator, ainsi qu'un workload Data Lakehouse complet. Pour cette mission, je positionne le cœur sur le lifecycle CaaS, la sécurité, l'observabilité, les upgrades et le support N3, en distinguant strictement lab local et production.
 
 ## Pitch 2 minutes
 
@@ -47,7 +61,7 @@ ClusterVersion/ClusterOperators/MCP, graphe de mise à jour, Operators/CSV/Insta
 Non. Un downgrade cluster générique n'est pas mon mécanisme standard. Je distingue récupération plateforme supportée, pause du chemin d'upgrade, rollback applicatif via Git et restore stateful selon responsabilité.
 
 ### 11. Comment traitez-vous un incident N3 DNS ?
-Je sépare CoreDNS/DNS service, résolution, Service/Endpoints, NetworkPolicy, CNI et dépendance externe. Je collecte événements/logs avant correction et termine par RCA + prévention.
+Je sépare DNS service/endpoints, résolution, NetworkPolicy, CNI et dépendance externe. Je collecte événements/logs avant correction et termine par RCA + prévention. Sur le lab OpenShift, la correction a nécessité de tenir compte du Service port 53 et du pod-side target port 5353.
 
 ### 12. Que faites-vous sur un PVC Pending ?
 PVC/PV/StorageClass, events, CSI provisioner, access mode, capacité, topology, quota. Je ne supprime pas un volume stateful comme première action.
@@ -59,7 +73,7 @@ Prometheus collecte/interroge les métriques ; Grafana les visualise ; Alertmana
 Pour corréler événement, alerte, workload et timeline d'incident. Les logs locaux du pod disparaissent trop facilement pour un diagnostic N3 robuste.
 
 ### 15. Trivy, Cosign, Kyverno : articulation ?
-Trivy analyse image/configuration, Cosign fournit identité/signature/attestation de l'artefact, Kyverno applique des règles d'admission. Je veux un contrôle positif et un rejet négatif observé.
+Trivy analyse image/configuration, Cosign fournit identité/signature/attestation de l'artefact, Kyverno applique des règles de policy-as-code. Je veux un contrôle positif et un rejet négatif observé.
 
 ### 16. Vault est-il obligatoire ?
 Non. Le besoin est un lifecycle de secrets maîtrisé. Vault/CyberArk/External Secrets sont des solutions possibles selon le SI. Je distingue le pattern d'intégration d'un runtime réellement prouvé.
